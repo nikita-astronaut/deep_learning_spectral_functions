@@ -30,6 +30,17 @@ def get_best_history(history, monitor='val_loss', mode='min'):
 
     return best_iteration + 1, loss, acc, val_loss, val_acc
 
+def predict_with_tta(model, corr, verbose=0):
+    predictions = np.zeros((tta_steps, len(omegas)))
+    test_probas = model.predict([corr], batch_size=batch_size, verbose=verbose)
+    predictions[0] = test_probas.reshape(test_probas.shape[0])
+
+    for i in range(1, tta_steps):
+        test_probas = model.predict([corr], batch_size=batch_size, verbose=verbose)
+        predictions[i] = test_probas.reshape(test_probas.shape[0])
+
+    return predictions
+
 def get_callbacks():
     return [
         EarlyStopping(monitor='val_loss', patience=40, verbose=1, min_delta=1e-4, mode='min'),
@@ -56,3 +67,9 @@ def train_and_evaluate_model(model):
     print ("loss: {:0.6f} - val_loss: {:0.6f}}".format(loss, val_loss))
     print ()
     return val_loss
+
+nn = model(input_length=len(taus), output_length=len(omegas))
+val_loss = train_and_evaluate_model(nn)
+nn.load_weights(filepath=best_weights_checkpoint)
+nn.save_weights(filepath=best_weights_path)
+
