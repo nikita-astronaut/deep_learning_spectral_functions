@@ -11,11 +11,11 @@ def dense_model(input_length, output_length):
     input_bands = Input(shape=[input_length], name = 'correlator')
     dense_1 = Dense(256)(input_bands)
     dense_1 = Activation('relu')(dense_1)
-    #dense_1 = Dropout(0.1)(dense_1, training=True)
+    dense_1 = Dropout(0.1)(dense_1, training=True)
 
     dense_2 = Dense(512)(dense_1)
     dense_2 = Activation('relu')(dense_2)
-    #dense_2 = Dropout(0.1)(dense_2, training=True)
+    dense_2 = Dropout(0.1)(dense_2, training=True)
 
     # dense_3 = Dense(256)(dense_2)
     # dense_3 = Activation('relu')(dense_3)
@@ -29,20 +29,18 @@ def dense_model(input_length, output_length):
     model.compile(optimizer=optimizer, loss='mse')
 
     return model
-'''
-def 1dconv_model(input_length, output_length):
+
+def conv_model(input_length, output_length):
     optimizer = Adam(lr = 0.001)
     model = Sequential()
-    model.add(Convolution1D(nb_filter=512, filter_length=3, input_shape=(input_length, 3)))
-model.add(Activation('relu'))
-model.add(Flatten())
-model.add(Dropout(0.4))
-model.add(Dense(2048, activation='relu'))
-model.add(Dense(1024, activation='relu'))
-model.add(Dense(nb_class))
-model.add(Activation('softmax'))
+    model.add(Conv1D(filters=512, kernel_size=3, input_shape=(input_length, 1)))
+    model.add(Activation('relu'))
+    model.add(Flatten())
+    model.add(Dropout(0.4))
+    model.add(Dense(2048, activation='relu'))
+    model.add(Dense(1024, activation='relu'))
+    model.add(Dense(output_length))
 
     model.compile(optimizer=optimizer, loss='mse')
 
     return model
-'''
