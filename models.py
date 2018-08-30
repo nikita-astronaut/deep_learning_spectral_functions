@@ -32,15 +32,16 @@ def dense_model(input_length, output_length):
 
 def conv_model(input_length, output_length):
     optimizer = Adam(lr = 0.001)
-    model = Sequential()
-    model.add(Conv1D(filters=512, kernel_size=3, input_shape=(input_length, 1)))
-    model.add(Activation('relu'))
-    model.add(Flatten())
-    model.add(Dropout(0.4))
-    model.add(Dense(2048, activation='relu'))
-    model.add(Dense(1024, activation='relu'))
-    model.add(Dense(output_length))
-
+    input_bands = Input(shape=(input_length, 1))
+    conv1 = Conv1D(filters=512, kernel_size=3, input_shape=(input_length, 1))(input_bands)
+    conv1 = Activation('relu')(conv1)
+    conv1 = Flatten()(conv1)
+    conv1 = Dropout(0.4)(conv1, training=True)
+    
+    dense = Dense(2048)(conv1)
+    dense = Dense(1024)(dense)
+    output = Dense(output_length)(dense)    
+    model = Model(inputs=[input_bands], outputs=output)
     model.compile(optimizer=optimizer, loss='mse')
 
     return model
