@@ -1,7 +1,7 @@
 from keras.models import Sequential, Model
 from keras.layers import Conv2D, MaxPooling2D, Dense, Dropout, Input, Flatten, Add, GlobalMaxPooling2D
 from keras.layers import Concatenate, concatenate
-from keras.layers import Activation, LeakyReLU
+from keras.layers import Activation, LeakyReLU, Convolution1D
 from keras.layers.normalization import BatchNormalization
 from keras.optimizers import Adam, RMSprop, SGD, Adadelta
 
@@ -29,3 +29,20 @@ def dense_model(input_length, output_length):
     model.compile(optimizer=optimizer, loss='mse')
 
     return model
+'''
+def 1dconv_model(input_length, output_length):
+    optimizer = Adam(lr = 0.001)
+    model = Sequential()
+    model.add(Convolution1D(nb_filter=512, filter_length=3, input_shape=(input_length, 3)))
+model.add(Activation('relu'))
+model.add(Flatten())
+model.add(Dropout(0.4))
+model.add(Dense(2048, activation='relu'))
+model.add(Dense(1024, activation='relu'))
+model.add(Dense(nb_class))
+model.add(Activation('softmax'))
+
+    model.compile(optimizer=optimizer, loss='mse')
+
+    return model
+'''
