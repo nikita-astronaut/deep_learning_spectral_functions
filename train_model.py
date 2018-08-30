@@ -1,20 +1,22 @@
 import numpy as np
-import keras
-import params
 import os
 os.environ['KERAS_BACKEND'] = 'tensorflow'
+import keras
+import params
+
 os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 from keras.callbacks import EarlyStopping, ReduceLROnPlateau, ModelCheckpoint
+from generators import data_generator
 from keras import backend as K
 
 model = params.model
-epochs = params.max_epochs
+epochs = params.epochs
 batch_size = params.batch_size
 best_weights_path = params.best_weights_path
 best_weights_checkpoint = params.best_weights_checkpoint
 best_model_path = params.best_model_path
-random_seed = params.seed
-num_folds = params.num_folds
+random_seed = params.random_seed
+# num_folds = params.num_folds
 tta_steps = params.tta_steps
 omegas = params.omegas
 taus = params.taus
@@ -55,7 +57,7 @@ def train_and_evaluate_model(model):
         data_generator(spectral_generator, kernel, omegas, taus, batch_size),
         steps_per_epoch=100,
         epochs=epochs,
-        verbose=2,
+        verbose=1,
         validation_data=data_generator(spectral_generator, kernel, omegas, taus, batch_size),
         validation_steps=10,
         callbacks=get_callbacks()
@@ -72,4 +74,3 @@ nn = model(input_length=len(taus), output_length=len(omegas))
 val_loss = train_and_evaluate_model(nn)
 nn.load_weights(filepath=best_weights_checkpoint)
 nn.save_weights(filepath=best_weights_path)
-

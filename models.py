@@ -8,8 +8,8 @@ from keras.optimizers import Adam, RMSprop, SGD, Adadelta
 def dense_model(input_length, output_length):
     optimizer = Adam(lr = 0.001, decay=0.0)
 
-    input_bands = Input(shape=input_length, name = 'correlator')
-    dense_1 = Dense(32)(inputs_bands_norm)
+    input_bands = Input(shape=[input_length], name = 'correlator')
+    dense_1 = Dense(32)(input_bands)
     dense_1 = Activation('elu')(dense_1)
     dense_1 = Dropout(0.3)(dense_1, training=True)
 
