@@ -39,7 +39,8 @@ def predict_with_tta(model, corr, verbose=0):
 nn = model(input_length=len(taus), output_length=len(omegas))
 nn.load_weights(filepath=best_weights_checkpoint)
 
-trial_spectral_function = spectral_generator(omegas)
+trial_spectral_function = np.zeros(len(omegas))
+trial_spectral_function[16] = 1.0
 trial_correlator = correlator_generator(trial_spectral_function, kernel, omegas, taus)
 mean, std = predict_with_tta(nn, trial_correlator)
 print(omegas, mean, std)
