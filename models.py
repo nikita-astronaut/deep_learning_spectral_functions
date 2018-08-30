@@ -9,20 +9,20 @@ def dense_model(input_length, output_length):
     optimizer = Adam(lr = 0.001, decay=0.0)
 
     input_bands = Input(shape=[input_length], name = 'correlator')
-    dense_1 = Dense(32)(input_bands)
+    dense_1 = Dense(256)(input_bands)
     dense_1 = Activation('elu')(dense_1)
-    dense_1 = Dropout(0.3)(dense_1, training=True)
+    # dense_1 = Dropout(0.3)(dense_1, training=True)
 
-    dense_2 = Dense(64)(dense_1)
+    dense_2 = Dense(512)(dense_1)
     dense_2 = Activation('elu')(dense_2)
-    dense_2 = Dropout(0.3)(dense_2, training=True)
+    # dense_2 = Dropout(0.3)(dense_2, training=True)
 
-    dense_3 = Dense(32)(dense_2)
+    dense_3 = Dense(256)(dense_2)
     dense_3 = Activation('elu')(dense_3)
-    dense_3 = Dropout(0.3)(dense_3, training=True)
+    # dense_3 = Dropout(0.3)(dense_3, training=True)
 
     output = Dense(output_length)(dense_3)
-    output = Activation('sigmoid')(output)
+    # output = Activation('sigmoid')(output)
 
     model = Model(inputs=[input_bands], outputs=output)
 
