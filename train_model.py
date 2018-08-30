@@ -26,11 +26,9 @@ kernel = params.kernel
 def get_best_history(history, monitor='val_loss', mode='min'):
     best_iteration = np.argmax(history[monitor]) if mode == 'max' else np.argmin(history[monitor])
     loss = history['loss'][best_iteration]
-    acc = history['acc'][best_iteration]
     val_loss = history['val_loss'][best_iteration]
-    val_acc = history['val_acc'][best_iteration]
 
-    return best_iteration + 1, loss, acc, val_loss, val_acc
+    return best_iteration + 1, loss, val_loss
 
 def predict_with_tta(model, corr, verbose=0):
     predictions = np.zeros((tta_steps, len(omegas)))
@@ -63,7 +61,7 @@ def train_and_evaluate_model(model):
         callbacks=get_callbacks()
     )
 
-    best_epoch, loss, acc, val_loss, val_acc = get_best_history(hist.history, monitor='val_loss', mode='min')
+    best_epoch, loss, val_loss = get_best_history(hist.history, monitor='val_loss', mode='min')
     print ()
     print ("Best epoch: {}".format(best_epoch))
     print ("loss: {:0.6f} - val_loss: {:0.6f}}".format(loss, val_loss))
