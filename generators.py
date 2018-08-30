@@ -21,4 +21,4 @@ def data_generator(spectral_generator, kernel, omegas, taus, batch_size):
 	while True:
 		X = np.array([spectral_generator(omegas) for _ in range(batch_size)])
 		y = np.array([correlator_generator(x, kernel, omegas, taus) for x in X])
-		yield y, X
+		yield y[..., np.newaxis], X

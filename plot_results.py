@@ -28,11 +28,11 @@ kernel = params.kernel
 
 def predict_with_tta(model, corr, verbose=0):
     predictions = np.zeros((tta_steps, len(omegas)))
-    test_probas = model.predict(corr[np.newaxis, :], batch_size=batch_size, verbose=verbose)
+    test_probas = model.predict(corr[np.newaxis, :, np.newaxis], batch_size=batch_size, verbose=verbose)
     predictions[0] = test_probas[0]
 
     for i in range(1, tta_steps):
-        test_probas = model.predict(corr[np.newaxis, :], batch_size=batch_size, verbose=verbose)
+        test_probas = model.predict(corr[np.newaxis, :, np.newaxis], batch_size=batch_size, verbose=verbose)
         predictions[i] = test_probas[0]
     return predictions.mean(axis = 0), predictions.std(axis = 0)
 

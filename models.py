@@ -1,6 +1,6 @@
 from keras.models import Sequential, Model
 from keras.layers import Conv2D, MaxPooling2D, Dense, Dropout, Input, Flatten, Add, GlobalMaxPooling2D
-from keras.layers import Concatenate, concatenate
+from keras.layers import Concatenate, concatenate, Conv1D
 from keras.layers import Activation, LeakyReLU, Convolution1D
 from keras.layers.normalization import BatchNormalization
 from keras.optimizers import Adam, RMSprop, SGD, Adadelta

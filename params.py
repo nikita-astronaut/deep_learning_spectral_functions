@@ -1,10 +1,10 @@
-from models import dense_model
+from models import dense_model, conv_model
 from generators import data_generator, uniform_data_generator, delta_data_generator
 from kernels import exponential_kernel
 import numpy as np
 
 
-model = dense_model
+model = conv_model
 epochs = 100
 batch_size = 512
 best_weights_path = 'weights/best_weights.hdf5'
